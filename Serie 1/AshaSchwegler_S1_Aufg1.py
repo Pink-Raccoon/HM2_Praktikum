@@ -8,7 +8,7 @@ Created on Mon Feb 21 13:10:29 2022
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
-#from mpl_toolkits.mplot3d import Axes3D
+
 
 
 g = 9.81
