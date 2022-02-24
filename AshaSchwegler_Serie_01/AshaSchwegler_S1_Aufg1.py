@@ -8,6 +8,7 @@ Created on Mon Feb 21 13:10:29 2022
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import scipy
 
 
 
@@ -17,7 +18,11 @@ g = 9.81
 def W(v0,alpha):
     return (v0**2*np.sin(2*alpha))/g
 
-#Bogenmass also bis pi halbe machen
+'''
+Erste Ableitung nach v0 nach alpha auflösen 
+= 1.5pi also 85.94Grad ist der Winkel Alpha wo W sein Maximum erreicht
+
+'''
 [v0,alpha] = np.meshgrid(np.linspace (0,100), np.linspace(0,np.pi/2))
 z = W(v0,alpha)
 fig = plt.figure(0)
@@ -57,3 +62,8 @@ plt.xlabel('x')
 plt.ylabel('y')
 
 plt.show()
+
+
+
+
+
