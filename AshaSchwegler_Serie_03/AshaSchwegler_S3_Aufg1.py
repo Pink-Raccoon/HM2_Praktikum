@@ -30,7 +30,7 @@ f_x0 = A.evalf()
 
 
 
-
+ 
 X = sp.Matrix([x1, x2])
 
 Df = g.jacobian(X)
