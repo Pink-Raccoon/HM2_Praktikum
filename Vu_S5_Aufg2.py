@@ -65,7 +65,7 @@ def S(x,y,xx):
      
     return yy
 
-'''
+
 x = np.array([[4.],[6],[8],[10]])
 y = np.array([[6.],[3],[9],[0]])
 n = len(x)-1
@@ -81,4 +81,3 @@ plt.title('kubischen Splinefunktion')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.show()
-'''
