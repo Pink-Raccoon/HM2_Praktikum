@@ -16,8 +16,12 @@ xx = np.arange(min(x),max(x),0.1)
 
 
 #a
-AshaSchwegler_S5_Aufg2(x,y,xx)
-
+yy = AshaSchwegler_S5_Aufg2(x,y,xx)
+plt.plot(xx, yy)
+plt.title('kubischen Splinefunktion')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
 
 #b
 nat_cubSpline = interpolate.CubicSpline(x,y)
@@ -25,7 +29,7 @@ plt.plot(xx,nat_cubSpline(xx), "--")
 
 
 #c
-p = np.polyfit(x-min(x),y,len(x)-1)
-val = np.polyval(p,xx-min(x))
+poly = np.polyfit(x-min(x),y,len(x)-1)
+val = np.polyval(poly,xx-min(x))
 plt.plot(xx,val,"--")
 plt.legend(["spline","cubicspline"])
