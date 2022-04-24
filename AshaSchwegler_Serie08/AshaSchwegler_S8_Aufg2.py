@@ -5,9 +5,9 @@ Created on Wed Apr 20 19:06:18 2022
 @author: Asha
 """
 
-import numpy as np
+
 import math
-import scipy as sp
+
 
 
 
