@@ -45,7 +45,7 @@ def f(x):
 
 a = 0
 b = np.pi
-m = 4
+m = 2
 
 T = romberg_extrapolate(f, a, b, m)
 
