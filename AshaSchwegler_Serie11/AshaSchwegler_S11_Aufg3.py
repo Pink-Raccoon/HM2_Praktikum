@@ -7,53 +7,70 @@ Created on Mon May  2 16:55:17 2022
 
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 from AshaSchwegler_S11_Aufg1 import AshaSchwegler_S11_Aufg1
 
-def f(x,y):
-    return x**2 / y
 
-def f_exakt(x):
-    return math.sqrt(((2*x**3)/3)+4)
 
-def euler(f, x0, y0, xn, n):
-    h = (xn-x0)/n
-    x = np.linspace(x0, xn, n+1)
-    y = np.empty(n+1)
-    x[0] = x0
-    y[0] = y0
-    for i in range(n):
-        y[i+1] = y[i] + h*f(x[i],y[i])
-    AshaSchwegler_S11_Aufg1(f,x0,xn,y0,y[n],)
-    return x, y
 
-def mittelpunktverfahren(f, x0, y0, xn, n):
-    
-    h = (xn-x0)/n
-    x = np.linspace(x0, xn, n+1)
-    y = np.empty(n+1)
-    x[0] = x0
-    y[0] = y0
-    for i in range(n):
-        x_halbe = x[i] + h
-        y_halbe = y[i] + h * f(x[i],y[i])
-        y[i+1] = y[i] + h*f(x_halbe,y_halbe)
-    return x, y
 
-def modifiziertenEulerverfahren(f, x0, y0, xn, n):
-    h = (xn-x0)/n
-    x = np.linspace(x0, xn, n+1)
-    y = np.empty(n+1)
-    y[0] = y0
-    x[0] = x0    
-    for i in range(n):
-        k1 = f(x[i],y[i])
-        y_euler = y[i] + h * k1
-        k2 = f(x[i+1],y_euler[i+1])
-        y[i+1] = y[i] + h*((k1+k2)/2)
-    return x, y
+def f(x, y):
+    return x**2/y
 
-def AshaSchwegler_S11_Aufg3(f,a,b,n,y0):
+def euler(f, x, y_euler, dx, i, maxX):
+    m = f(x, y_euler[i])
+    y_euler = np.append(y_euler, m*dx + y_euler[i])
+    if x+dx >= maxX:
+        return y_euler
+    return euler(f, x + dx, y_euler, dx, i+1, maxX)
+
+def y_euler(f, x, y_euler, dx, i, maxX):
+    m = f(x, y_euler[i])
+    y_euler = np.append(y_euler, m*dx + y_euler[i])
+    if x+dx >= maxX:
+        return y_euler
+    return y_euler(f, x + dx, y_euler, dx, i+1, maxX)
+
+
+def mittelpunktverfahren(f, x, y_mittelpunkt, dx, i, maxX):
+    m = f(x, y_mittelpunkt[i])
+    mm = f(x + dx/2, y_mittelpunkt[i] + dx/2*m)
+    y_mittelpunkt = np.append(y_mittelpunkt, mm*dx + y_mittelpunkt[i])
+    if x+dx >= maxX:
+        return y_mittelpunkt
+    return mittelpunktverfahren(f, x + dx, y_mittelpunkt, dx, i+1, maxX)
+
+def modifiziertenEulerverfahren(f, x, y_modeuler, dx, i, maxX):
+    m = f(x, y_modeuler[i])
+    mm = f(x + dx, y_modeuler[i] + dx*m)
+    y_modeuler = np.append(y_modeuler, dx/2 * (m + mm) + y_modeuler[i])
+    if x+dx >= maxX:
+        return y_modeuler
+    return modifiziertenEulerverfahren(f, x + dx, y_modeuler, dx, i+1, maxX)
    
-    
-    
-    
+def AshaSchwegler_S11_Aufg3(f, a, b, n, y0):
+    x = np.linspace(a, b, n+1)
+    dx = (b-a)/n
+    y_euler = euler(f, a, np.array([y0]), dx, 0, b)
+    y_mittelpunkt = mittelpunktverfahren(f, a, np.array([y0]), dx, 0, b)
+    y_modeuler = modifiziertenEulerverfahren(f, a, np.array([y0]), dx, 0, b)
+    return [x, y_euler, y_mittelpunkt, y_modeuler]
+
+
+(x, y_euler, y_mittelpunkt, y_modeuler) = AshaSchwegler_S11_Aufg3(f, 0, 7, 10, 2)
+
+print("x: ", x)
+print()
+print("y_euler: ", y_euler)
+print()
+print("y_mittelpunkt: ", y_mittelpunkt)
+print()
+print("y_modeuler: ", y_modeuler)
+
+
+plt.plot(x, y_euler, label='Eulerverfahren')
+plt.plot(x, y_mittelpunkt, label='Mittelpunktverfahren')
+plt.plot(x, y_modeuler, label='Modifizieres Eulerverfahren')
+plt.legend()
+AshaSchwegler_S11_Aufg1(f, 0, 7, 2, 15, 0.5, 1)
+plt.show()

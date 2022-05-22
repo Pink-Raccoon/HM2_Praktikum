@@ -11,15 +11,19 @@ import matplotlib.pyplot as plt
 
 
 def AshaSchwegler_S11_Aufg1(f,xmin,xmax,ymin,ymax,hx,hy):
-    x = np.arange(xmin, xmax, step=hx, dtype=np.float64)
-    y = np.arange(ymin, ymax, step=hy, dtype=np.float64)
-    [x_grid, y_grid] = np.meshgrid(x, y)
+    x = np.linspace(xmin, xmax, int((xmax - xmin)/hx))
+    y = np.linspace(ymin, ymax, int((ymax - ymin)/hy))
+    x, y = np.meshgrid(x, y)
+    vx = np.ones_like(x)
+    vy = f(x,y)
+    # normieren
+    v = np.sqrt(vx**2+vy**2)
+    vx = vx / v
+    vy = vy / v
+    plt.quiver(x,y,vx,vy,width=0.003)
 
-    dy = f(x_grid, y_grid)
-    dx = np.full((dy.shape[0], dy.shape[1]), 1, dtype=np.float64)
-    richtungsVektor = np.array([1,f(x_grid, y_grid)], dtype= 'float')
-    vektor_normieren = np.linalg.norm(richtungsVektor)
-    vektor_laenge_1 = 1/vektor_normieren
-    plt.quiver(x_grid, y_grid, dx, dy,*vektor_normieren)
-    plt.show()
 
+def f(x, y):
+    return ((x**2) * 1.0) / y
+
+AshaSchwegler_S11_Aufg1(f, -1, 4, 0.5, 8, 0.5, 0.5)
