@@ -21,10 +21,10 @@ def f(v):
     return 97000 / ((-5) * v**2 - 570000)
 
 # Aufgabe a)
-print(Lecaj_S10_Aufg1(f, 0, np.pi, 4))
+print("Bremszeit = ",Lecaj_S10_Aufg1(f, 0, np.pi, 4))
 
 # Aufgabe b)
 def f(v):
     return 97000 * v / ((-5) * v**2 - 570000)
 
-print(Lecaj_S10_Aufg1(f, 100, 0, 4))
+print("Bremsweg = ",Lecaj_S10_Aufg1(f, 100, 0, 4))
