@@ -28,7 +28,7 @@ x = np.linspace(a,b,n+1)
 def f(x,z):
     res = np.empty(z.shape)
     res[:-1] = z[1:]
-    res[-1] =((-5*z[1]**2)-270000)/m
+    res[-1] =((-5*z[1]**2)-570000)/m
     return res
     
 
@@ -49,7 +49,7 @@ def mittelpunktverfahren(f, x, h, y0):
         x_mitte = x[i] + h/2
         y_mitte = y_mittel[i] + (h/2)*f(x[i], y_mittel[i])
         y_mittel[i + 1] = y_mittel[i] + h * f(x_mitte,y_mitte)
-        print('y[',str(i),']=y',y_mittel,'\n')
+        
     return y_mittel
 
 y0 = np.array([0.,100])
@@ -58,7 +58,7 @@ y_mittel = mittelpunktverfahren(f, x, h, y0)
 plt.figure(1)
 
 plt.plot(x,y_mittel[:,0],label='Bremsweg')
-plt.plot(x,y_mittel[:,1],label='Bremszeit')
+plt.plot(x,y_mittel[:,1],label='Geschwindigkeit')
 
 
 
