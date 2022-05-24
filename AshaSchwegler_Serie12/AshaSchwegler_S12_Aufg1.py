@@ -36,3 +36,7 @@ n = 5
 y0 = 0
 
 print(AshaSchwegler_S12_Aufg1(f, a, b, n, y0))
+
+
+
+
