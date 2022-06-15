@@ -150,5 +150,4 @@ plt.ylabel('y')
 plt.show()  
 
 
-# print('maximum =',g(lam)+Dg(lam0)*(lam-lam0) )
-print('maximum =',np.linalg.solve(f_max(x.T),0) )
+print('maximum =',np.linalg.solve(g(lam)+Dg(lam0)*(lam-lam0),0 ))
