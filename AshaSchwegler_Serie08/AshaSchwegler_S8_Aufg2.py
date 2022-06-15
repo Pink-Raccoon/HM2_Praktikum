@@ -8,8 +8,19 @@ Created on Wed Apr 20 19:06:18 2022
 
 import math
 
+m = 10
+v = 5
+v0 = 20
 
 
+
+def integrate(v):
+    foo = (v**(3/2))
+    to_int = -10*v**(-(3/2)+1)
+    integ = (1/(-(3/2)+1)) * to_int
+    return integ
+
+Exakter_Wert = abs(integrate(v) - integrate(v0))
 
 def f(x,m):
     return m/(-x * math.sqrt(x))
@@ -28,7 +39,7 @@ def sumRechteck(a,b,n,m):
     
     
 print("Summierte Rechtecksregel: t= ", sumRechteck(20,5,5,10), '\n')
-
+print('Absolute Fehler = ', abs(sumRechteck(20,5,5,10)-Exakter_Wert),'\n')
 
 #b
 
@@ -42,9 +53,9 @@ def sumTrapez(a,b,n,m):
     result *= h
     return result
 
-# print("f(a):", f(20,10), '\n')
-# print("f(b):", f(5,10), '\n')
+
 print("Summierte Trapezregel: t= ", sumTrapez(20,5,5,10), '\n')
+print('Absolute Fehler = ', abs(sumTrapez(20,5,5,10)-Exakter_Wert),'\n')
 
 
 #c
@@ -65,6 +76,6 @@ def sumSimpson(a,b,n,m):
     return (h/3)*(result1+result2)
 
 print("Summierte Simpsonregel: t= ", sumSimpson(20,5,5,10), '\n')    
+print('Absolute Fehler = ', abs(sumSimpson(20,5,5,10)-Exakter_Wert),'\n')
 
-
-
+print('Exakter Wert=', Exakter_Wert)

@@ -28,6 +28,7 @@ def interpolate_mod_euler(f, x, h, y0):
 
     for i in range(x.shape[0] - 1):
         y[i + 1] = y[i] + h * (f(x[i], y[i]) + f(x[i + 1], y[i] + h * f(x[i], y[i]))) / 2
+        print('i =', i,'\n')
 
     return y
 

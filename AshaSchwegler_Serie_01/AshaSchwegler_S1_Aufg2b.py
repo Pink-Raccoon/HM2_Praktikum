@@ -29,7 +29,7 @@ z1 = v(x,t)
 
 fig = plt.figure(0)
 ax = fig.add_subplot(111, projection='3d')
-ax.plot_wireframe(x,t,z, rstride=5, cstride=5)
+ax.plot_wireframe(x,t,z, rstride=10, cstride=10)
 
 
 plt.title('Gitter')
@@ -40,7 +40,7 @@ ax.set_zlabel('z')
 
 fig = plt.figure(1)
 ax = fig.add_subplot(111, projection='3d')
-ax.plot_wireframe(x,t,z1, rstride=5, cstride=5)
+ax.plot_wireframe(x,t,z1, rstride=10, cstride=10)
 
 
 plt.title('Gitter')

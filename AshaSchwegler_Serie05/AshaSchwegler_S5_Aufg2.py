@@ -9,6 +9,12 @@ Created on Sun Mar 27 20:53:48 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
+x_int = [4,6,8,10]
+y_int = [6,3,9,0]   
+
+xx = np.arange(min(x_int),max(x_int),0.1) 
+
+
 def AshaSchwegler_S5_Aufg2(x,y,xx):
     n = len(x)-1  # n = 3 
     yy = []
@@ -33,11 +39,11 @@ def AshaSchwegler_S5_Aufg2(x,y,xx):
         A[i][i] = 2*(h[i]+h[i+1])
             
     
-   # print('A:', A)
+    print('A:', A)
     for i in range(n-1):
         z.append(3*((y[i+2]-y[i+1])/h[i+1]-(y[i+1]-y[i])/h[i])) 
       
-   #print('z:',z)
+    print('z:',z)
     tmp = np.linalg.solve(A,z)
     print('tmp: ', tmp)
     c.append(0)
@@ -58,15 +64,23 @@ def AshaSchwegler_S5_Aufg2(x,y,xx):
     print("a:",a)   
     print("b:",b)
     print("c:",c)  
-    print("d:",d)        
-    plt.plot(xx,yy)
-    plt.show()
-            
-x = [4,6,8,10]
-y = [6,3,9,0]   
+    print("d:",d)    
+    
+    return yy    
 
-xx = np.arange(min(x),max(x),0.1)   
-AshaSchwegler_S5_Aufg2(x,y,xx)
+
+yy = AshaSchwegler_S5_Aufg2(x_int,y_int,xx)
+
+plt.figure(1)
+plt.grid()
+plt.plot(xx, yy, zorder=0, label='spline interpolation')
+plt.scatter(x_int, y_int, marker='x', color='r', zorder=1, label='measured')
+plt.scatter(x_int, y_int, marker='X', color='fuchsia', label='interpolated')
+plt.legend()
+plt.show()
+            
+  
+yy = AshaSchwegler_S5_Aufg2(x_int,y_int,xx)
 
 
 

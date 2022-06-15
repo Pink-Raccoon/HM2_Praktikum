@@ -18,7 +18,7 @@ plt.show()
 
 
 """ 
-b) Was ist der Schätzwert für 2020, basierend auf Ihrem Resultat aus a)? Ist das realistisch, und können solche
+c) Was ist der Schätzwert für 2020, basierend auf Ihrem Resultat aus a)? Ist das realistisch, und können solche
    Polynome hoher Ordnung für Schätzwerte ausserhalb des Intervalls der vorhandenen Datenwerte benutzt
    werden? 
 
@@ -45,7 +45,7 @@ plt.legend()
 plt.show()
 
 """
-c) Was stellen Sie im Vergleich der beiden Methoden fest? 
+d) Was stellen Sie im Vergleich der beiden Methoden fest? 
 
 A: Das Lagrange-Polynom oszilliert im Bereich der äusseren Messwerte stark und bietet dort auch bei der Interpolation
    keine guten Näherungswerte.

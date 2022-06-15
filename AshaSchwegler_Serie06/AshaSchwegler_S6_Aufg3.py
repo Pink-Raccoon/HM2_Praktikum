@@ -28,37 +28,52 @@ data=np.array([
 
 [n,m] = np.shape(data)
 y = data[:,m-1]
-x =data[:,:m-1].T
+y_neu= np.log10(y)
+x =data[:,m-2]
+x_neu = x-1970
 print('x: ',x, '\n')
 A = np.zeros([n,m])
 
-def f2(x):
-    return(x-1970)
-
-def f1(x):
-    return 1
-
-A[:,:m-1] = f1(x)
-A[:,m-1] = f2(x)
-print('A = ',A, '\n')
-
-y_neu = np.log10(y)
-print('y_neu: ', y_neu, '\n')
-
-lam = lam = np.linalg.solve(A.T @ A, A.T @ y_neu)
-print('lambda Normalgleichung: ', lam, '\n')
-
-def f(A,lam):
-    yy = 0
-    for i in range(m):
-        yy += lam[i]*A[:,i]
-    return yy
-
-print (f(A,lam))
+print('Ansatz für lineare Regression: f(x) = ax + b = a * f1(x) + b * f2(x) mit f1(x) = x, f2(x) = 1')
+print('Minimiere das Fehlerfunktional E(f)(a, b) = ∑[i = 1 .. n](yi - (a*xi + b))^2   (Quadrierte Differenz zwischen den Messwerten yi und den Schätzwerten von f(x))')
+print('Die partiellen Ableitungen des Fehlerfunktionals nach a und nach b liefern zwei Gleichungen, als LGS Ax = r')
+print('⎡ ∑xi^2   ∑xi ⎤   ⎡ a ⎤   ⎡ ∑xi*yi ⎤\n' +
+      '⎢              ⎥ * ⎢   ⎥ = ⎢        ⎥\n' +
+      '⎣ ∑xi     n   ⎦    ⎣ b ⎦   ⎣ ∑yi    ⎦\n')
 
 
-# plt.plot(x,y.T)
-# plt.plot(x,yy)
-# plt.yscale("log")
-# plt.legend(["Messpunkte", "Ausgleich"])
-# plt.show()
+A = np.array([
+    [np.sum(x_neu ** 2), np.sum(x_neu)],
+    [np.sum(x_neu), x_neu.shape[0]]
+])
+
+r = np.array([np.sum(x_neu * y_neu), np.sum(y_neu)])
+
+[a,b] = np.linalg.solve(A,r)
+
+print('a = {}, b = {}'.format(a, b))
+print('Die gesuchte Ausgleichsgerade ist also f(x) = {}x + {}'.format(a, b))
+
+def Ausgleichgerade(x):
+    return b + (x)*a
+#3.2
+print('Im Jahre 2015 werden ',Ausgleichgerade(2015-1970)**10,' Stücke von Z13 erscheinen')
+
+plt.figure(1)
+plt.grid()
+plt.plot(x,Ausgleichgerade(x_neu),zorder=0, label='Regression')
+plt.xlim(1971,2020)
+plt.ylim(3,13)
+plt.scatter(x, y_neu, marker='x', color='r',  label='measured')
+plt.scatter(2015, Ausgleichgerade(2015-1970), marker='X', color='fuchsia', label='Extrapolated')
+
+plt.legend()
+
+plt.show()
+
+
+#3.3
+
+'''
+theta_1 = b = höhe und theta_b = a = Steigung_ hier 3.13 
+'''

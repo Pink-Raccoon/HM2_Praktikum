@@ -20,7 +20,7 @@ def AshaSchwegler_S11_Aufg1(f,xmin,xmax,ymin,ymax,hx,hy):
     v = np.sqrt(vx**2+vy**2)
     vx = vx / v
     vy = vy / v
-    plt.quiver(x,y,vx,vy,width=0.003)
+    plt.quiver(x,y,vx,vy,width=0.003,color='pink')
 
 
 def f(x, y):

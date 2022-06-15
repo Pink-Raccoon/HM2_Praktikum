@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Apr 25 16:46:56 2022
+Created on Tue Jun  7 17:17:42 2022
 
 @author: ashas
 """
-
 import numpy as np
+import matplotlib.pyplot as plt
 
+
+t = 0
+x0 = 0
+v0 = 100
+m = 97000
 
 
 def sumTrapez(f, a, b, n):
@@ -19,6 +24,7 @@ def sumTrapez(f, a, b, n):
     for i in range(1, n):
         sum += f(a + i*h)
     return h * ((f(a) + f(b))/2 + sum)
+
 
 def AshaSchwegler_S9_Aufg3(f, a, b, m):
     print("1. Berechne die Tj0 mit der Trapezregel:")
@@ -36,10 +42,25 @@ def AshaSchwegler_S9_Aufg3(f, a, b, m):
     print('\nTij = \n', T)
     return T[0,m]
 
-def f(x):
-    return np.cos(x**2)
+
+#m*d_v/d_t = -5*v**2 -570000
+#separieren der Variabeln = I~dt = I~(m*d_v)/-5*v**2 -570000
+
+#v(t) = a*t + v0 
+#t = (v/a)-v0
+
+def f(v):
+    return m/(-5*v**2 -570000)
 
 
 
+t_brems = AshaSchwegler_S9_Aufg3(f,0,100,10)
 
-print(AshaSchwegler_S9_Aufg3(f, 0, np.pi, 4))
+def f_weg(v):
+    return (m/(-5*v**2 -570000))* v
+
+meter = AshaSchwegler_S9_Aufg3(f_weg,0,100,10)
+
+
+print('Bremszeit beträgt: ',t_brems, ' Sekunden \n' )
+print('Bremsweg beträgt: ',meter, ' meter \n')

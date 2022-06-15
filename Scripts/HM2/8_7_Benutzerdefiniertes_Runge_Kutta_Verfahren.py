@@ -74,3 +74,5 @@ plt.plot(x, np.abs(y - y_exact(x)), label='Runge-Kutta')
 plt.plot(x, np.abs(y_c - y_exact(x)), label='Runge-Kutta custom')
 plt.legend()
 plt.show()
+
+

@@ -23,7 +23,9 @@ X = sp.Matrix([x,y])
 Df = f.jacobian(X)
 Df0 = Df.subs([(x,1),(y,2)])
 
-print(Df0)
+print('Df = ',Df,'\n')
+
+print('Lösung Df= ',Df0,'\n')
 
 
 #1b
@@ -42,6 +44,6 @@ A = sp.Matrix([x1,x2,x3])
 Df_a = func.jacobian(A)
 Df1 = Df_a.subs([(x1,1),(x2,2),(x3,3)])
 
-print('')
+print('Df_a = ',Df_a,'\n')
 
-print(Df1)
+print('Lösung Df1= ',Df1,'\n')

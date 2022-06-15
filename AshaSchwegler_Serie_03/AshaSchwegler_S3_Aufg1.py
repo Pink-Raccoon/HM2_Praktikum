@@ -43,12 +43,16 @@ delt0 = sp.linsolve(Df0*Delt + f_x0, Delta1, Delta2)
 
 
 
+
+
 arr_delta0 = np.array([[delt0.args[0][0]],[delt0.args[0][1]]])
 
 x_one = x0 + arr_delta0
 
 A_1 = g.subs([(x1,0.996),(x2,1.026)],dtype='float')
 f_x1= A_1.evalf()
+
+
 
 fx1_matr=np.array([[f_x1]],dtype='float')
 
@@ -70,6 +74,6 @@ fx2_matr = np.array([[f_x2]],dtype='float')
 
 normx2 = np.linalg.norm(fx2_matr)
 x2x1 = np.array([[x_two - x_one]],dtype='float')
-normx1x0= np.linalg.norm(x2x1)
+normx2x1= np.linalg.norm(x2x1)
 
 print(normx1x0)

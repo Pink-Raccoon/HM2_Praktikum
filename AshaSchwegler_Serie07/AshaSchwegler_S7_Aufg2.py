@@ -39,6 +39,7 @@ def gauss_newton_d(g, Dg, lam0, tol, max_iter, pmax, damping):
         # Update des Vektors Lambda
         lam = lam + delta / (2 ** p)
         err_func = np.linalg.norm(g(lam)) ** 2
+        #xopt = scipy.optimize.fmin(err_func, lam0)
         increment = np.linalg.norm(delta)
         k = k + 1
         print('Iteration: ', k)
@@ -64,11 +65,13 @@ Dg = sp.lambdify([p], Dg, 'numpy')
 [lam, n] = gauss_newton_d(g, Dg, lam0, tol, max_iter, pmax, damping)
 
 
+
 t = sp.symbols('t')
 F = f(t, lam)
 F = sp.lambdify([t],F,'numpy')
 t = np.linspace(x.min(), x.max())
 
+plt.figure(1)
 plt.plot(x, y, 'o')
 plt.plot(t, F(t))
 plt.xlabel('x')
@@ -76,7 +79,42 @@ plt.ylabel('y')
 plt.show()
 
 # Aufgabe b)
-# Es konvergiert nicht.
+def gauss_newton(g, Dg, lam0, tol, max_iter):
+    k=0
+    lam=np.copy(lam0)
+    increment = tol+1
+    err_func = np.linalg.norm(g(lam))**2
+    
+    while tol <= err_func and max_iter<k : #Hier kommt Ihre Abbruchbedingung, die tol und max_iter berücksichtigen muss# 
+
+        # QR-Zerlegung von Dg(lam) und delta als Lösung des lin. Gleichungssystems
+        [Q,R] = np.linalg.qr(Dg(lam).flatten())
+        [delta] = np.linalg.solve(R,-Q.T @ g(lam)).flatten()   
+        
+       
+        # Update des Vektors Lambda        
+        lam += delta.flatten()
+        err_func = np.linalg.norm(g(lam)).flatten()**2
+        increment = np.linalg.norm(delta)
+        print('Iteration: ',k)
+        print('lambda = ',lam)
+        print('Inkrement = ',increment)
+        print('Fehlerfunktional =', err_func)
+    return(lam,k)
+
+[lam_without,k] = gauss_newton(g,Dg,lam0,tol,max_iter)
+t = sp.symbols('t')
+F = f(t, lam_without)
+F = sp.lambdify([t],F,'numpy')
+t = np.linspace(x.min(), x.max())
+
+plt.figure(2)
+plt.plot(x, y, 'o')
+plt.plot(t, F(t))
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+# Es konvergiert .
 
 
 # Aufgabe c)
@@ -88,5 +126,5 @@ def err_func(lam):
        return np.linalg.norm(g(lam)) ** 2
 
 
-xopt = scipy.optimize.fmin(err_func, lam0)
-print(xopt)
+
+

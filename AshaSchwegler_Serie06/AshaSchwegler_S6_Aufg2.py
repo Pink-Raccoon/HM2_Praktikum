@@ -50,8 +50,8 @@ mCH =lam1 · TTank + lam2 · TBenzin + lam3 · pTank + lam4 · pBenzin +lam5
 
 
 [n,m] = np.shape(data)
-y = data[:,m-1]
-x = range (n)
+y = data[:,m-1] #letzte spalte = masse CH
+x = range (n) #0-32
 A = np.zeros([n,m])
 A[:,:m-1] = data[:,:m-1]
 A[:,m-1] = np.ones(n)
@@ -70,7 +70,7 @@ yy= f(A,lam)
 
 
 
-plt.plot(x,y)
+plt.scatter(x,y,marker='x', color='r', zorder=1)
 plt.plot(x,yy)
 plt.legend(["Messpunkte","Ausgleich"])
 plt.show()

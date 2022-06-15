@@ -27,11 +27,11 @@ g = sp.Matrix([(f1),(f2),(f3)])
 Df = g.jacobian(X)
 Df0 = Df.subs([(x1,1.5),(x2,3),(x3,2.5)])
 
-A = sp.Matrix([x1, x2, x3])
-A0 = A.subs([(x1,1.5),(x2,3),(x3,2.5)])
+#A = sp.Matrix([x1, x2, x3])
+A0 = X.subs([(x1,1.5),(x2,3),(x3,2.5)])
 
 
 g_x = f_x0 + (Df0 * (X-A0))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 
 
-print(g_x.evalf())
+print('g(x) = ',g_x.evalf())
