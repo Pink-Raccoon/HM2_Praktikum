@@ -1,41 +1,42 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun 15 14:40:39 2022
+Created on Thu Jun 16 16:54:35 2022
 
 @author: ashas
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 import sympy as sp
-import math
-x = np.array([0,14,28,42,56])
-y = np.array([29,2072,15798,25854,28997])
+import matplotlib.pyplot as plt
 
-#a 
-'''
-N(0) = N0, lim von N(t) = G
-'''
+x = np.array([0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0])
+y = np.array([39.55,46.55,50.13,51.75,55.25,56.79,56.78,59.13,57.76,59.39,60.08])
 
-N0 = 29
-G = 30000
-c = 0.3049
+plt.figure(1)
+plt.grid()
+plt.scatter(x,y,marker='x',label='Messdaten')
+plt.legend()
+plt.show()
 
-tol = 1e-5
+A = 0
+Q = 60
+tau = 2.0 / 5
+
+
+tol = 1e-7
 max_iter = 30
-pmax = 10
+pmax = 5
 damping = 1
 
-lam0 = np.array([G,N0,c], dtype=np.float64)
+
+lam0 = np.array([A,Q,tau], dtype=np.float64)
 p = sp.symbols('p:{n:d}'.format(n=lam0.size))
 
 
+def U(x,p):
+    return (p[0]+(p[1]-p[0]) * (1 - sp.exp(-x/p[2])))
 
-
-def f(t,p):
-    return p[0]/(((p[0]-p[1])/p[1])*sp.exp(-p[2]*t)+1) 
-
-g = sp.Matrix([y[k]-f(x[k],p) for k in range(len(x))])
+g = sp.Matrix([y[k]-U(x[k],p) for k in range(len(x))])
 Dg = g.jacobian(p)
 
 g = sp.lambdify([p], g, 'numpy')
@@ -71,22 +72,6 @@ while increment > tol and k <= max_iter:
     print('Inkrement = ', increment)
     print('Fehlerfunktional =', err_func)
     print()
-
-t = sp.symbols('t')
-F = f(t, lam)
-F = sp.lambdify([t],F,'numpy')
-t = np.linspace(-5, 70,75)
-
-
-
-plt.figure(1)
-plt.grid()
-plt.title('Nicht-lineare Ausgleichrechnung COVID-19')
-plt.scatter(x,y,marker='x',label='Messdaten')
-plt.plot(t, F(t), color = 'black', label='gedämptes Newton Verfahren')
-plt.legend()
-plt.show()
-
 
 
 

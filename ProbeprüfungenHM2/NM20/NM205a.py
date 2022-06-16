@@ -7,9 +7,10 @@ Created on Wed Jun 15 10:09:27 2022
 
 import numpy as np
 import matplotlib.pyplot as plt
+import sympy as sy
 
-x = np.array([500,1000,1500,2500,3500,4000,4500,5000,5250,5500])
-y= np.array([10.5,49.2,72.1,85.4,113,121,112,80.2,61.1,13.8])
+x = np.array([500,1000,1500,2500,3500,4000,4500,5000,5250,5500],dtype=np.float64)
+y= np.array([10.5,49.2,72.1,85.4,113,121,112,80.2,61.1,13.8],dtype=np.float64)
 
 
 
@@ -58,7 +59,7 @@ plt.figure(1)
 plt.grid()
 plt.title('Ausgleich')
 plt.scatter(x,y,marker='X',label= 'Messpunkte')
-plt.plot(x,f(x,lam_qr),color='r')
+plt.plot(x,f(x,lam_qr),color='r',label='Ausgleich')
 plt.plot(x,val,color='orange', label='Polyfit')
 plt.xlabel('d')
 plt.ylabel('P')
@@ -67,87 +68,50 @@ plt.show()
 
 
 
-#%%
+#%% aufgabae 5c)
 
-import sympy as sp
-import numpy as np
-import matplotlib.pyplot as plt
+x = sy.symbols('x')
 
-lam0 = np.array([1, 2, 2, 1,2],dtype=np.float64)
-tol = 1e-5
+"""==================== INPUT ===================="""
+f = lam_qr[0]*x**4 + lam_qr[1]*x**3 + lam_qr[2]*x**2 + lam_qr[3]*x + lam_qr[4]
+x0 = 20000
 
-p = sp.symbols('p0 p1 p2 p3 p4')
-# oder eleganter: 
-# p = sp.symbols('p:{n:d}'.format(n=lam.size))
-p
+max_error = 1e-6
+"""==============================================="""
+
+df = sy.diff(f, x)
+d2f = sy.diff(df, x)
+fl = sy.lambdify(x, f)
+dfl = sy.lambdify(x, df)
+d2fl = sy.lambdify(x, d2f)
+
+print("f'(x) = " + str(df))
+
+print("Konvergenzbedingung für x0 prüfen:")
+d = abs((fl(x0) * d2fl(x0)) / ((dfl(x0)) ** 2))
+
+if d < 1:
+    print("Konvergenzbedingung erfüllt!")
+else:
+    print("Konvergenzbedingung NICHT erfüllt!")
+
+if d < 1:
+    xn = [x0]
+    print("n = 0: x0 = " + str(x0))
+
+    n = 0
+
+    while n < 1 or abs(xn[n] - xn[n - 1]) > max_error:
+        xn.append(xn[n] - dfl(xn[n]) / d2fl(xn[n]))
+
+        n += 1
+
+        print("n = " + str(n) + ": x" + str(n) + " = " + str(xn[n]) + ", Δ = " + str(abs(xn[n] - xn[n - 1])))
 
 
-
-def f(x, p):
-    return p[0]*f1(x) + p[1]*f2(x) + p[2]*f3(x) + p[3]*f4(x) + p[4]*f5(x)
-
-g = sp.Matrix([y[k]-f(x[k],p) for k in range(len(x))])
-
-Dg = g.jacobian(p)
-
-g = sp.lambdify([p], g, 'numpy')
-Dg = sp.lambdify([p], Dg, 'numpy')
-g(lam0)
-Dg(lam0)
-k=0
-lam=np.copy(lam0)
-[Q,R] = np.linalg.qr(Dg(lam))
-delta = np.linalg.solve(R,-Q.T @ g(lam)).flatten()  # Achtung: flatten() braucht es, um aus dem Spaltenvektor delta wieder eine Liste zu machen, da g hier nicht mit Spaltenvektoren als Input umgehen kann
-lam = lam+delta
-increment = np.linalg.norm(delta)
-
-err_func0 = np.linalg.norm(g(lam0))**2
-err_func = np.linalg.norm(g(lam))**2
-
-
-def gauss_newton(g, Dg, lam0, tol, max_iter):
-    k=0
-    lam=np.copy(lam0)
-    increment = tol+1
-    err_func = np.linalg.norm(g(lam))**2
     
-    while tol <= err_func and max_iter<k : #Hier kommt Ihre Abbruchbedingung, die tol und max_iter berücksichtigen muss# 
-
-        # QR-Zerlegung von Dg(lam) und delta als Lösung des lin. Gleichungssystems
-        [Q,R] = np.linalg.qr(Dg(lam).flatten())
-        [delta] = np.linalg.solve(R,-Q.T @ g(lam)).flatten()   
-        
-       
-        # Update des Vektors Lambda        
-        lam += delta.flatten()
-        err_func = np.linalg.norm(g(lam)).flatten()**2
-        increment = np.linalg.norm(delta)
-        print('Iteration: ',k)
-        print('lambda = ',lam)
-        print('Inkrement = ',increment)
-        print('Fehlerfunktional =', err_func)
-    return(lam,k)
-
-tol = 1e-5
-max_iter = 30
-[lam_without,n] = gauss_newton(g, Dg, lam0, tol, max_iter)
-
-t = sp.symbols('t')
-F = f(t,lam_without)
-F = sp.lambdify([t],F,'numpy')
-t = np.linspace(x.min(),x.max())
-
-def f_max(x):
-    return lam[0] + 2*lam[1]*x + 3*lam[2]*x**2+ 4*lam[3]*x**3 
 
 
-plt.figure(2)
-plt.title('Newton-Gauss')
-plt.plot(x,y,'o')
-plt.plot(t,F(t))
-plt.xlabel('x')
-plt.ylabel('y')
-plt.show()  
 
 
-print('maximum =',np.linalg.solve(g(lam)+Dg(lam0)*(lam-lam0),0 ))
+

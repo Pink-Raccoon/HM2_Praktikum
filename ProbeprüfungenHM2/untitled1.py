@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Mar  7 15:17:19 2021
 
-HM2, Bsp. 6.9
-
-@author: knaa / miec
-"""
 
 import sympy as sy
 import numpy as np
