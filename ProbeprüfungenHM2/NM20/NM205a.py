@@ -8,8 +8,8 @@ Created on Wed Jun 15 10:09:27 2022
 import numpy as np
 import matplotlib.pyplot as plt
 
-x = np.array([500,1000,1500,2500,3500,4000,4500,5000,5250,5500])
-y= np.array([10.5,49.2,72.1,85.4,113,121,112,80.2,61.1,13.8])
+x = np.array([500,1000,1500,2500,3500,4000,4500,5000,5250,5500],dtype=np.float64)
+y= np.array([10.5,49.2,72.1,85.4,113,121,112,80.2,61.1,13.8],dtype=np.float64)
 
 
 
