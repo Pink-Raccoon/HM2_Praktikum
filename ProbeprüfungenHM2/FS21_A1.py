@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 16 10:09:33 2022
+Created on Tue Jun 21 23:57:37 2022
 
-@author: ashas
+@author: Asha
 """
+# -*- coding: utf-8 -*-
+
 
 import sympy as sy
 import numpy as np
@@ -48,8 +50,8 @@ INPUT
 
 # ACHTUNG: Für sinus/cosinus/Exponentialfunktion immer sy.sin/sy.cos/sy.exp/sy.ln/sy.abs verwenden!
 f = sy.Matrix([
-    [2*(x1+x2)**2-16*x1],
-    [2*(x1+x2)**2-9*x2]
+    [(x1**2+1)*(x1+x2)**2-16*x1**2],
+    [(x2**2+1)*(x1+x2)**2-9*x2**2]
 ])
 
 x = sy.Matrix([x1, x2])

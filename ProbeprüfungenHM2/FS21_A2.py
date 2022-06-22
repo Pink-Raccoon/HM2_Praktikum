@@ -21,7 +21,7 @@ f4= x
 f5 = [1 for xi in x]
 
 def f(x, lam):
-    return lam[0]*f1(x) + lam[1]*f2(x) + lam[2]*f3(x) + lam[3]*f4(x) + lam[4]*f5(x)
+    return np.array([lam[4]*f1(x) + lam[3]*f2(x) + lam[2]*f3(x) + lam[1]*f4(x) + lam[0]*f5(x)])
 
 
 print('Ansatz: f(x) = a*x^2 + b*x + c')
@@ -59,33 +59,26 @@ print('\nFehler mit direktem Lösen = ' + str(error_direct))
 print('Fehler mit QR = ' + str(error_qr))
 print('Fehler mit numpy polyfit = ' + str(error_polyfit))
 
-print('Ansatz für lineare Regression: f(x) = ax + b = a * f1(x) + b * f2(x) mit f1(x) = x, f2(x) = 1')
-print('Minimiere das Fehlerfunktional E(f)(a, b) = ∑[i = 1 .. n](yi - (a*xi + b))^2   (Quadrierte Differenz zwischen den Messwerten yi und den Schätzwerten von f(x))')
-print('Die partiellen Ableitungen des Fehlerfunktionals nach a und nach b liefern zwei Gleichungen, als LGS Ax = r')
-print('⎡ ∑xi^2   ∑xi ⎤   ⎡ a ⎤   ⎡ ∑xi*yi ⎤\n' +
-      '⎢              ⎥ * ⎢   ⎥ = ⎢        ⎥\n' +
-      '⎣ ∑xi     n   ⎦    ⎣ b ⎦   ⎣ ∑yi    ⎦\n')
+f1_neu = x**2
+f2_neu = [1 for xi in x]
 
-A = np.array([
-    [np.sum(x ** 2), np.sum(x)],
-    [np.sum(x), x.shape[0]]
-])
+def f_neu(x,lam_neu):
+    return (lam_neu[0]*f2_neu+lam_neu[1]*f1_neu)**-1
 
-r = np.array([np.sum(x * y), np.sum(y)])
+A_neu = np.array([f1_neu,f2_neu]).T
+print('A = \n{}'.format(A_neu))
+Q, R = np.linalg.qr(A_neu)
+print('Q = \n{}\nR = {}'.format(Q, R))
+coeff_lin =np.linalg.solve(A_neu.T @ A_neu, A_neu.T @ y)
+print('\n\nMit direktem Lösen von AT * A * λ = AT * y: λ = ' + str(coeff_lin))
 
-print('A = \n{}'.format(A))
-print('r = {}'.format(r))
 
-print('LGS wird gelöst...\n')
+error_lin = np.linalg.norm(y - A_neu @ coeff_lin, 2) ** 2
+print('Fehler mit lin = ' + str(error_lin))
 
-ab = np.linalg.solve(A, r)
-a = ab[0]
-b = ab[1]
+xx = np.arange(0,5 ,50, dtype=np.float64)  # Plot-X-Werte
 
-xx = np.arange(x[0], x[-1], (x[-1] - x[0]) / 10000)  # Plot-X-Werte
-yy = a * xx + b
-print('a = {}, b = {}'.format(a, b))
-print('Die gesuchte Ausgleichsgerade ist also f(x) = {}x + {}'.format(a, b))
+
 
 
 
@@ -96,8 +89,7 @@ plt.figure(1)
 plt.grid()
 plt.title('Ausgleich')
 plt.scatter(x,y,marker='X',label= 'Messpunkte')
-plt.plot(xx, np.polyval(coeff_direct, xx), zorder=0, label='direct solve')
-plt.plot(xx,yy,label='lineare Regression')
-plt.show()
+plt.plot(xx, f(x,coeff_direct), color='g',zorder=0, label='direct solve')
+plt.plot(np.polyval(coeff_lin,xx), label='lin')
 plt.legend(['Messpunkte','direct solve','lineare Regression'])
 plt.show()

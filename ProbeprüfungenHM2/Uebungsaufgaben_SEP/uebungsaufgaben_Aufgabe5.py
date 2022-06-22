@@ -12,7 +12,7 @@ import sympy as sy
 x = np.array([25,35,45,55,65],dtype=np.float64)
 y = np.array([47,114,223,81,20],dtype=np.float64)
 
-A0 = 10.0**8.0
+A0 = 10.0**8
 f0 = 50.0
 c0 = 600.0
 
@@ -35,10 +35,7 @@ Dg = g.jacobian(a)
 g_lambda = sy.lambdify([a], g, 'numpy')
 Dg_lambda = sy.lambdify([a], Dg, 'numpy')
 
-k = 0
-lam = np.copy(lam0)
-increment = abs(lam[k+1]-lam[k])
-err_func = np.linalg.norm(g_lambda(lam)) ** 2
+
 
 
 k = 0

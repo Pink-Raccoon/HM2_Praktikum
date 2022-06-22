@@ -12,13 +12,9 @@ import matplotlib.pyplot as plt
 x = np.array([0.0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6,1.8,2.0])
 y = np.array([39.55,46.55,50.13,51.75,55.25,56.79,56.78,59.13,57.76,59.39,60.08])
 
-plt.figure(1)
-plt.grid()
-plt.scatter(x,y,marker='x',label='Messdaten')
-plt.legend()
-plt.show()
 
-A = 0
+
+A = 40
 Q = 60
 tau = 2.0 / 5
 
@@ -73,10 +69,14 @@ while increment > tol and k <= max_iter:
     print('Fehlerfunktional =', err_func)
     print()
 
+yy = (lam[0]+(lam[1]-lam[0]) * (1 - np.exp(-x/lam[2])))
 
-
-
-
+plt.figure(1)
+plt.grid()
+plt.scatter(x,y,marker='x',label='Messdaten')
+plt.plot(x,yy)
+plt.legend()
+plt.show()
 
 
 
